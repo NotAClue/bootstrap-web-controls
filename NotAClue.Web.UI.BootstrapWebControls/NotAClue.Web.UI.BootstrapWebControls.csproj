@@ -52,30 +52,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Menu\BootstrapMenu.cs" />
-    <Compile Include="Tabs\TabDesigner.cs" />
-    <Compile Include="Tabs\Tab.cs" />
-    <Compile Include="Tabs\BootstrapTabs.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="HelperExtensionMethods.cs" />
-    <Compile Include="Tabs\ContentTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tabs\BootstrapTabsDesigner.cs" />
-    <None Include="AjaxTabs\OnDemandMode.cs" />
-    <None Include="AjaxTabs\TabContainer.cs" />
-    <None Include="AjaxTabs\TabContainerDesigner.cs" />
-    <None Include="AjaxTabs\TabPanel.cs" />
-    <None Include="AjaxTabs\TabPanelCollection.cs" />
-    <None Include="AjaxTabs\TabPanelDesigner.cs" />
-    <Compile Include="Tabs\TabStripPlacement.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="web.config.transformation" />
+    <Compile Include="Tabs\BootstrapTabs.cs" />
+    <Compile Include="Tabs\Tab.cs" />
+    <Compile Include="Tabs\TabCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Menu\BootstrapMenu.ico" />
     <Content Include="Tabs\BootstrapTabs.ico" />
-    <None Include="AjaxTabs\Tabs.ico" />
-    <Content Include="AjaxTabs\Tabs_resource.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

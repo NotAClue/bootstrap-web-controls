@@ -2,124 +2,120 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace NotAClue.Web.UI.BootstrapWebControls
 {
-    [ParseChildren(typeof(BootstrapTabs), DefaultProperty = "BootstrapTabs", ChildrenAsProperties = true)]
-    public class Tab : WebControl
-    {
+	[ParseChildren(false)]
+	[PersistChildren(true)]
+	[ToolboxItem(false)]
+	public class Tab : WebControl
+	{
+		#region [Constants]
+		private const string CLASS = "class";
+		private const string TAB_TEXT = "TitleText";
+		#endregion
 
-        private List<BootstrapTabs> _BootstrapTabs;
+		#region [Fields]
+		private BootstrapTabs _owner;
+		#endregion
 
-        public Tab()  : base("tabs")
-        {
-            _BootstrapTabs = new List<BootstrapTabs>();
-        }
+		#region [Constructors]
+		public Tab() : base(HtmlTextWriterTag.Div) { }
 
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TemplateContainer(typeof(BootstrapTabs))]
-        public List<BootstrapTabs> BootstrapTabs { get { return this._BootstrapTabs; } }
+		public Tab(HtmlTextWriterTag tag) : base(tag) { }
 
-        [Category("Behavior")]
-        [DefaultValue(false)]
-        [Description("Set to true to allow an already selected tab to become unselected again upon reselection.")]
-        public bool Collapsible { get; set; }
+		protected Tab(string tag) : base(tag) { }
+		#endregion
 
-        [TypeConverter(typeof(Boolean))]
-        [Category("Appearance")]
-        [DefaultValue(null)]
-        [Description("Disables (true) or enables (false) the tab.")]
-        public new dynamic Disabled { get; set; }
+		#region [Properties]
+		[DefaultValue("")]
+		[Category("Appearance")]
+		public String TitleText
+		{
+			get
+			{
+				return (string)(ViewState[TAB_TEXT] ?? string.Empty);
+			}
+			set
+			{
+				ViewState[TAB_TEXT] = value;
+			}
+		}
 
-        [Category("Behavior")]
-        [DefaultValue("click")]
-        [Description("The type of event to be used for selecting a tab.")]
-        public string Event { get; set; }
+		[TypeConverter(typeof(Boolean))]
+		[Category("Appearance")]
+		[DefaultValue(null)]
+		[Description("Disables (true) or enables (false) the tab.")]
+		public Boolean Disabled { get; set; }
 
-        [TypeConverter(typeof(String))]
-        [Category("Behavior")]
-        [DefaultValue(null)]
-        [Description("Specifies if and how to animate the hiding of the panel.")]
-        public dynamic Hide { get; set; }
+		[Category("Behavior")]
+		[DefaultValue(0)]
+		[Description("Zero-based index of the tab to be selected on initialization. To set all tabs to unselected pass -1 as value.")]
+		public Boolean Active { get; set; }
+		#endregion
 
-        [TypeConverter(typeof(String))]
-        [Category("Behavior")]
-        [DefaultValue(null)]
-        [Description("Specifies if and how to animate the showing of the panel.")]
-        public dynamic Show { get; set; }
+		#region [Methods]
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
 
-        [Category("Behavior")]
-        [DefaultValue(0)]
-        [Description("Zero-based index of the tab to be selected on initialization. To set all tabs to unselected pass -1 as value.")]
-        public int Active { get; set; }
+			if (String.IsNullOrEmpty(this.TitleText))
+				throw new InvalidOperationException("Each tab must have it's TitleText property set.");
 
-        [Category("Action")]
-        [Description("This event is triggered when clicking a tab.")]
-        public event EventHandler ActiveTabChanged;
+			if (String.IsNullOrEmpty(this.ID))
+				throw new InvalidOperationException("Each tab must have it's ID property set.");
 
-        protected override HtmlTextWriterTag TagKey
-        {
-            get { return HtmlTextWriterTag.Div; }
-        }
+			if (((BootstrapTabs)Parent).Tabs.OfType<Tab>().Count(t => t.ID == this.ID) > 1)
+				throw new InvalidOperationException("Each tab must have it's ID property must be unique.");
+		}
 
-        public override ControlCollection Controls
-        {
-            get
-            {
-                this.EnsureChildControls();
-                return base.Controls;
-            }
-        }
+		public override void RenderBeginTag(HtmlTextWriter writer)
+		{
+			//base.RenderBeginTag(writer);
+		}
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            this.Controls.Clear();
+		protected override void Render(HtmlTextWriter writer)
+		{
+			//<div
+			writer.WriteBeginTag("div");
 
-            if (BootstrapTabs != null)
-            {
-                foreach (BootstrapTabs page in BootstrapTabs)
-                {
-                    this.Controls.Add(page);
-                }
-            }
+			var cssClass = "tab-pane";
 
-            base.OnPreRender(e);
-        }
+			// set as active
+			if (this.Active)
+				cssClass += " active";
 
-        protected override void Render(HtmlTextWriter writer)
-        {
+			// add any extra css classes
+			if (!String.IsNullOrEmpty(this.CssClass))
+				cssClass += " " + this.CssClass;
 
-            this.RenderBeginTag(writer);
+			//<div class="tab-pane active"
+			writer.WriteAttribute(CLASS, cssClass);
 
-            writer.WriteBeginTag("ul");
+			//<div class="tab-pane active" id="home"
+			writer.WriteAttribute("id", String.Format("{0}-content-{1}", Parent.ClientID, this.ClientID));
 
-            writer.Write(HtmlTextWriter.TagRightChar);
+			//<div class="tab-pane active" id="home">
+			writer.Write(HtmlTextWriter.TagRightChar);
 
-            if (BootstrapTabs != null)
-            {
-                foreach (BootstrapTabs page in BootstrapTabs)
-                {
-                    writer.WriteFullBeginTag("li");
+			// render child controls here
+			base.RenderChildren(writer);
 
-                    writer.WriteBeginTag("a");
-                    writer.WriteAttribute("href", "#" + page.ClientID);
-                    writer.Write(HtmlTextWriter.TagRightChar);
-                    writer.Write(page.Title);
-                    writer.WriteEndTag("a");
+			//<div class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></div>
+			writer.WriteEndTag("div");
+		}
 
-                    writer.WriteEndTag("li");
-                }
-            }
+		public override void RenderEndTag(HtmlTextWriter writer)
+		{
+			//base.RenderEndTag(writer);
+		}
 
-            writer.WriteEndTag("ul");
-
-            this.RenderChildren(writer);
-
-            this.RenderEndTag(writer);
-        }
-    }
+		internal void SetOwner(BootstrapTabs owner)
+		{
+			_owner = owner;
+		}
+		#endregion
+	}
 }
