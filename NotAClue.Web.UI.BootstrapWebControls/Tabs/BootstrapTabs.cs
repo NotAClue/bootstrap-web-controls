@@ -146,7 +146,7 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 		protected BootstrapTabs(string tag) : base(tag) { }
 		#endregion
 
-		#region [Methods]
+		#region [Initializer]
 		/// <summary>
 		/// Fires when pages initializes.
 		/// </summary>
@@ -176,19 +176,26 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 
 			// add client script
 			var script = new StringBuilder();
-			script.Append("$(function ()\n");
-			script.Append("{\n");
+			script.Append("$(document).ready(function () {\n");
+			//script.Append("		alert('I got run!');\n");
+
+			// clear cookie if this is hte initial page load
+			if (!this.Page.IsPostBack)
+				script.AppendFormat("		$.cookie('{0}-last_tab', null, {{ path: '/' }});\n", this.ClientID);
+
 			script.AppendFormat("	$('#{0} a[data-toggle=tab]').on('shown.bs.tab', function (e) {{\n", this.ClientID);
 			script.Append("		//save the latest tab using a cookie:\n");
 			script.AppendFormat("		$.cookie('{0}-last_tab', $(e.target).attr('href'));\n", this.ClientID);
+			//script.Append("		alert($(e.target).attr('href'));\n");
 			script.Append("	});\n");
 			script.Append("	//activate latest tab, if it exists:\n");
 			script.AppendFormat("	var lastTab = $.cookie('{0}-last_tab');\n", this.ClientID);
 			script.Append("	if (lastTab) {\n");
+			//script.Append("		alert(lastTab);\n");
 			script.Append("		$('a[href=' + lastTab + ']').tab('show');\n");
 			script.Append("	}\n");
 			script.Append("	else {\n");
-			script.Append("		// Set the first tab if cookie do not exist\n");
+			script.Append("		// Set the first tab if cookie does not exist\n");
 			script.AppendFormat("		$('#{0} a[data-toggle=\"tab\"]:first').tab('show');\n", this.ClientID);
 			script.Append("	}\n");
 			script.Append("});\n");
@@ -205,7 +212,9 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 				csm.RegisterStartupScript(scriptType, scriptKey, script.ToString(), true);
 			}
 		}
+		#endregion
 
+		#region [Methods]
 		/// <summary>
 		/// AddParseSubObject checks if object is not null and type of TabPanel.
 		/// </summary>
@@ -259,45 +268,6 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 			return new TabCollection(this);
 		}
 
-		///// <summary>
-		///// Loads the savedState of TabContainer.
-		///// </summary>
-		///// <param name="savedState">savedState</param>
-		//protected override void LoadControlState(object savedState)
-		//{
-		//	var p = (Pair)savedState;
-		//	if (p != null)
-		//	{
-		//		base.LoadControlState(p.First);
-		//		ActiveTabIndex = (int)p.Second;
-		//	}
-		//	else
-		//	{
-		//		base.LoadControlState(null);
-		//	}
-		//}
-
-		///// <summary>
-		///// Saves the controlState to load next post back.
-		///// </summary>
-		///// <returns>object containing saved state</returns>
-		//protected override object SaveControlState()
-		//{
-		//	LastActiveTabIndex = ActiveTabIndex;
-
-		//	var p = new Pair();
-		//	p.First = base.SaveControlState();
-		//	p.Second = ActiveTabIndex;
-		//	if (p.First == null && p.Second == null)
-		//	{
-		//		return null;
-		//	}
-		//	else
-		//	{
-		//		return p;
-		//	}
-		//}
-
 		/// <summary>
 		/// Renders the HTML opening tag of the control to the specified writer. This method is used primarily by control developers.
 		/// </summary>
@@ -341,8 +311,8 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 				//<li
 				writer.WriteBeginTag("li");
 
-				//add controls id
-				writer.WriteAttribute("id", "tab-" + ClientID);
+				////add controls id
+				//writer.WriteAttribute("id", "tab-" + ClientID);
 
 				//<li class="active"
 				if (ActiveTab.ID == tab.ID)
@@ -350,6 +320,8 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 
 				//<li class="active">
 				writer.Write(HtmlTextWriter.TagRightChar);
+				writer.WriteLine();
+				writer.Indent++;
 
 				//<a
 				writer.WriteBeginTag("a");
@@ -371,9 +343,12 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 
 				//<a href="#home" role="tab" data-toggle="tab">Home</a>
 				writer.WriteEndTag("a");
+				writer.WriteLine();
+				writer.Indent--;
 
 				//<li class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
 				writer.WriteEndTag("li");
+				writer.WriteLine();
 			}
 
 			writer.Indent--;

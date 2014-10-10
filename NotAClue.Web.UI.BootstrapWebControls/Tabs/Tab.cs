@@ -99,9 +99,13 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 
 			//<div class="tab-pane active" id="home">
 			writer.Write(HtmlTextWriter.TagRightChar);
+			writer.WriteLine();
+			writer.Indent++;
 
 			// render child controls here
 			base.RenderChildren(writer);
+			writer.WriteLine();
+			writer.Indent--;
 
 			//<div class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></div>
 			writer.WriteEndTag("div");
