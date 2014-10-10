@@ -63,6 +63,10 @@
     <Content Include="Menu\BootstrapMenu.ico" />
     <Content Include="Tabs\BootstrapTabs.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Breadcrumb\" />
+    <Folder Include="ModalWindow\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
