@@ -42,31 +42,9 @@
 				</nac:BootstrapTabs>
 			</p>
 			<asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
+			<br />
+			<asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
 		</div>
 	</form>
-	<script type="text/javascript">
-		//$(function ()
-		//{
-		//	$('#BootstrapTabs1 a[data-toggle=tab]').on('shown.bs.tab', function (e)
-		//	{
-		//		// get parent id
-		//		//var parentId = $(this).parent().parent().attr('id');
-		//		//alert(parentId);
-		//		//save the latest tab using a cookie:
-		//		$.cookie('BootstrapTabs1-last_tab', $(e.target).attr('href'));
-		//	});
-		//	//activate latest tab, if it exists:
-		//	var lastTab = $.cookie('BootstrapTabs1-last_tab');
-		//	if (lastTab)
-		//	{
-		//		$('a[href=' + lastTab + ']').tab('show');
-		//	}
-		//	else
-		//	{
-		//		// Set the first tab if cookie do not exist
-		//		$('a[data-toggle="tab"]:first').tab('show');
-		//	}
-		//});
-	</script>
 </body>
 </html>

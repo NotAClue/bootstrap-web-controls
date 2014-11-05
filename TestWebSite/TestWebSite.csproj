@@ -66,6 +66,9 @@
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="HtmlPage2.html" />
+    <Content Include="HtmlPage1.html" />
+    <Content Include="ModalDialogTest.aspx" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -92,6 +95,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModalDialogTest.aspx.cs">
+      <DependentUpon>ModalDialogTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ModalDialogTest.aspx.designer.cs">
+      <DependentUpon>ModalDialogTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TabsTest.aspx.cs">
       <DependentUpon>TabsTest.aspx</DependentUpon>
