@@ -137,9 +137,11 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 							writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(this, "b" + item.ValuePath.Replace(PathSeparator.ToString(), "\\"), true));
 						}
 
-						writer.WriteTargetAttribute(item.Target);
+						//TODO: find a better work around!!!
+						if (!String.IsNullOrEmpty(item.Target))
+							writer.WriteAttribute("target", item.Target);
 
-						if (!String.IsNullOrEmpty(item.ToolTip))
+						if (!String.IsNullOrEmpty(item.ToolTip) && item.ToolTip != "_blank")
 						{
 							writer.WriteAttribute("title", item.ToolTip);
 						}
@@ -205,11 +207,16 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 							Page.ClientScript.GetPostBackClientHyperlink(this,
 								"b" + item.ValuePath.Replace(PathSeparator.ToString(), "\\"), true));
 						}
+
+						//TODO: find a better work around!!!
+						if (!String.IsNullOrEmpty(item.Target))
+							writer.WriteAttribute("target", item.Target);
+
 						cssClass = GetItemClass(this, item);
 						writer.WriteAttribute("class", cssClass);
 						writer.WriteTargetAttribute(item.Target);
 
-						if (!String.IsNullOrEmpty(item.ToolTip))
+						if (!String.IsNullOrEmpty(item.ToolTip) && item.ToolTip != "_blank")
 						{
 							writer.WriteAttribute("title", item.ToolTip);
 						}
@@ -220,6 +227,7 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 								writer.WriteAttribute("title", ToolTip);
 							}
 						}
+
 						writer.Write(HtmlTextWriter.TagRightChar);
 						writer.Indent++;
 						writer.WriteLine();

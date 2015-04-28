@@ -12,6 +12,8 @@ namespace TestWebSite
         protected void Page_Init(object sender, EventArgs e)
         {
             //Button1.OnClientClick = String.Format("$('#{0}').modal('show')", myModal.ClientID);
+            var cs = Page.ClientScript;
+            cs.RegisterClientScriptBlock(this.GetType(), "Open", String.Format("$('#{0}').modal(options)", myModal.ClientID), true);
         }
 
         protected void Button1_Click(object sender, EventArgs e)

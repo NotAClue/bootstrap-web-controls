@@ -21,21 +21,21 @@
 			</Scripts>
 		</asp:ScriptManager>--%>
 		<script>
-		    
-		    $('#myModal').modal('show');
+			
+			$('#myModal').modal('show');
 		</script>
 		<div class="container">
 			<h1>Bootstrap Tab Test Page</h1>
 
 			<!-- Button trigger modal -->
-			<asp:Button ID="Button1" runat="server" CssClass="btn btn-primary btn-lg" Text="Show Modal Dialog" UseSubmitBehavior="False" OnClick="Button1_Click" />
+			<asp:Button ID="Button1" runat="server" CssClass="btn btn-primary btn-lg" Text="Show Modal Dialog Post-Back" UseSubmitBehavior="False" OnClick="Button1_Click" />
 
-			<a href="#" class="btn btn-primary btn-lg" onclick="$('#myModal').modal('show');">
-				Launch demo modal
+			<a class="btn btn-primary btn-lg" onclick="$('#myModal').modal('show');">
+				Launch demo modal JavaScript
 			</a>
 
-			<a href="#" class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#myModal">
-				Launch demo modal
+			<a class="btn btn-primary btn-lg"  data-toggle="modal" data-target="#myModal">
+				Launch demo modal data-attribute
 			</a>
 
 			<nac:BootstrapModalDialog
@@ -43,12 +43,19 @@
 				runat="server"
 				ClientIDMode="Static"
 				DisplayFooter="True"
-				ModalSize="Small"
+				ModalSize="Default"
 				FadeIn="True"
 				Title="Modal Test">
 				This is Bootstrap Modal Dialog.
-				<nac:FooterButton runat="server" ID="CloseButton" ButtonType="Cancel" ButtonStyle="Default"><span class="glyphicon glyphicon-remove"></span>Close</nac:FooterButton>
-				<nac:FooterButton runat="server" ID="SaveButton" ButtonType="OK" ButtonStyle="Primary"><span class="glyphicon glyphicon-save"></span>Save</nac:FooterButton>
+				<asp:TextBox runat="server" ID="SomeText"></asp:TextBox>
+				<asp:RadioButtonList ID="RadioButtonList1" runat="server">
+					<asp:ListItem>1</asp:ListItem>
+					<asp:ListItem>2</asp:ListItem>
+					<asp:ListItem>3</asp:ListItem>
+					<asp:ListItem>4</asp:ListItem>
+				</asp:RadioButtonList>
+				<nac:FooterButton runat="server" ID="CloseButton" ButtonType="Cancel" ButtonStyle="Default"><span class="glyphicon glyphicon-remove"></span> Close</nac:FooterButton>
+				<nac:FooterButton runat="server" ID="SaveButton" ButtonType="OK" ButtonStyle="Primary"><span class="glyphicon glyphicon-save"></span> Save</nac:FooterButton>
 			</nac:BootstrapModalDialog>
 		</div>
 	</form>

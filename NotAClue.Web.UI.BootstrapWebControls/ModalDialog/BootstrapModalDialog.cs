@@ -6,14 +6,16 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.ComponentModel;
 using System.Drawing;
+using System.Collections.Specialized;
 
 namespace NotAClue.Web.UI.BootstrapWebControls
 {
     [ParseChildren(typeof(FooterButton))]
     [PersistChildren(false)]
     [ToolboxBitmap(typeof(BootstrapModalDialog), "ModalDialog.BootstrapModalDialog.ico")]
+    [DefaultEvent("ButtonClicked")]
     [DefaultProperty("Text")]
-    public class BootstrapModalDialog : Control
+    public class BootstrapModalDialog : Control, IPostBackDataHandler
     {
         #region [Constants]
         private const string CLASS = "class";
@@ -21,6 +23,64 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 
         #region [Fields]
         private FooterButtonCollection _FooterButtons = new FooterButtonCollection();
+        #endregion
+
+        #region [Events]
+        private static readonly object ButtonClickedEvent = new object();
+
+        public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            ButtonClickedName = postCollection[this.UniqueID];
+            return true;
+        }
+
+        public void RaisePostDataChangedEvent()
+        {
+            OnButtonClicked(EventArgs.Empty);
+        }
+
+        protected virtual void OnButtonClicked(EventArgs e)
+        {
+            EventHandler buttonClickedHandler = (EventHandler)Events[ButtonClickedEvent];
+            if (buttonClickedHandler != null)
+                buttonClickedHandler(this, e);
+        }
+
+        [Category("Action")]
+        [Description("Raised when text changes")]
+        public event EventHandler ButtonClicked
+        {
+            add
+            {
+                Events.AddHandler(ButtonClickedEvent, value);
+            }
+            remove
+            {
+                Events.RemoveHandler(ButtonClickedEvent, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the values.
+        /// </summary>
+        /// <value>The values.</value>
+        [Browsable(true)]
+        [Bindable(true)]
+        [Localizable(false)]
+        [Category("Appearance")]
+        [Description("Button Clicked Id")]
+        public String ButtonClickedName
+        {
+            get
+            {
+                var s = (String)ViewState["Values"];
+                return (String.IsNullOrEmpty(s) ? String.Empty : s);
+            }
+            set
+            {
+                ViewState["Values"] = value;
+            }
+        }
         #endregion
 
         #region [Properties]
@@ -171,7 +231,20 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 
             //  <div class="modal-dialog">
             writer.WriteBeginTag("div");
-            writer.WriteAttribute(CLASS, "modal-dialog");
+
+            var modalClass = "modal-dialog";
+            switch (ModalSize)
+            {
+                case BootstrapModalSizes.Small:
+                    modalClass += " modal-sm";
+                    break;
+                case BootstrapModalSizes.Large:
+                    modalClass += " modal-lg";
+                    break;
+            }
+
+            writer.WriteAttribute(CLASS, modalClass);
+
             writer.Write(HtmlTextWriter.TagRightChar);
             writer.WriteLine();
             writer.Indent++;
