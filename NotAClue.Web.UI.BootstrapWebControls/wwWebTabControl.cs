@@ -53,7 +53,7 @@ namespace NotAClue.Web.UI.BootstrapWebControls
 
 		protected System.Web.UI.WebControls.Literal txtActivationScript;
 		protected System.Web.UI.WebControls.Literal txtTabPlaceHolder;
-		private bool DesignMode = (HttpContext.Current == null);
+		private new bool DesignMode = (HttpContext.Current == null);
 
 		/// <summary>
 		/// The Selected Tab. Set this to the TabPageClientId of the tab that you want to have selected

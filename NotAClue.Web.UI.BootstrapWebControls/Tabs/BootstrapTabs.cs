@@ -177,9 +177,9 @@ namespace NotAClue.Web.UI.BootstrapWebControls
             // add client script
             var script = new StringBuilder();
             script.Append("$(document).ready(function () {\n");
-            //script.Append("		alert('I got run!');\n");
+            //script.Append("		alert('I got ran!');\n");
 
-            // clear cookie if this is hte initial page load
+            // clear cookie if this is the initial page load
             if (!this.Page.IsPostBack)
                 script.AppendFormat("		$.cookie('{0}-last_tab', null, {{ path: '/' }});\n", this.ClientID);
 
@@ -188,7 +188,7 @@ namespace NotAClue.Web.UI.BootstrapWebControls
             script.AppendFormat("		$.cookie('{0}-last_tab', $(e.target).attr('href'));\n", this.ClientID);
             //script.Append("		alert($(e.target).attr('href'));\n");
             script.Append("	});\n");
-            script.Append("	//activate latest tab, if it exists:\n");
+            script.Append("	//activate last selected tab, if it exists:\n");
             script.AppendFormat("	var lastTab = $.cookie('{0}-last_tab');\n", this.ClientID);
             script.Append("	if (lastTab) {\n");
             //script.Append("		alert(lastTab);\n");
@@ -393,7 +393,6 @@ namespace NotAClue.Web.UI.BootstrapWebControls
             writer.Indent--;
             writer.WriteLine();
             writer.WriteEndTag("div");
-
         }
 
         /// <summary>
