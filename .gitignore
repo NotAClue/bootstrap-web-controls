@@ -154,8 +154,13 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# ingnored local files
 /BootstrapWebControls.sln.ide
 /.vs/BootstrapWebControls/v15/Server/sqlite3/db.lock
 /.vs/BootstrapWebControls/v15/Server/sqlite3/storage.ide
 /.vs/BootstrapWebControls/v15/Server/sqlite3/storage.ide-shm
 /.vs/BootstrapWebControls/v15/Server/sqlite3/storage.ide-wal
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
+/.vs/config/applicationhost.config
